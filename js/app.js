@@ -16,7 +16,19 @@ const DEFAULT_STATS = {
     hangman: { plays: 2900, rating: 4.7 },
     simonsays: { plays: 2400, rating: 4.8 },
     whackamole: { plays: 3300, rating: 4.6 },
-    numberguess: { plays: 2100, rating: 4.5 }
+    numberguess: { plays: 2100, rating: 4.5 },
+    rps: { plays: 3400, rating: 4.6 },
+    diceroll: { plays: 2700, rating: 4.5 },
+    coinflip: { plays: 2900, rating: 4.4 },
+    patternmemory: { plays: 2200, rating: 4.7 },
+    trivia: { plays: 3600, rating: 4.8 },
+    reaction: { plays: 3100, rating: 4.9 },
+    oddoneout: { plays: 2800, rating: 4.6 },
+    anagram: { plays: 2500, rating: 4.7 },
+    tabletennis: { plays: 1800, rating: 4.6 },
+    snakesladders: { plays: 2000, rating: 4.5 },
+    carrom: { plays: 1600, rating: 4.7 },
+    chess: { plays: 2300, rating: 4.9 }
 };
 
 const GAME_META = {
@@ -35,7 +47,19 @@ const GAME_META = {
     hangman: { name: 'Hangman', icon: 'fa-font', color: '#f43f5e' },
     simonsays: { name: 'Simon Says', icon: 'fa-lightbulb', color: '#f59e0b' },
     whackamole: { name: 'Whack-a-Mole', icon: 'fa-hammer', color: '#fb923c' },
-    numberguess: { name: 'Number Guess', icon: 'fa-dice', color: '#14b8a6' }
+    numberguess: { name: 'Number Guess', icon: 'fa-dice', color: '#14b8a6' },
+    rps: { name: 'Rock Paper Scissors', icon: 'fa-hand-scissors', color: '#8b5cf6' },
+    diceroll: { name: 'Dice Roll', icon: 'fa-dice-six', color: '#6366f1' },
+    coinflip: { name: 'Coin Flip', icon: 'fa-coins', color: '#f59e0b' },
+    patternmemory: { name: 'Pattern Memory', icon: 'fa-brain', color: '#ec4899' },
+    trivia: { name: 'Trivia Quiz', icon: 'fa-circle-question', color: '#3b82f6' },
+    reaction: { name: 'Reaction Time', icon: 'fa-bolt', color: '#22c55e' },
+    oddoneout: { name: 'Odd One Out', icon: 'fa-eye', color: '#14b8a6' },
+    anagram: { name: 'Anagram Hunt', icon: 'fa-spell-check', color: '#a855f7' },
+    tabletennis: { name: 'Table Tennis', icon: 'fa-table-tennis-paddle-ball', color: '#f43f5e' },
+    snakesladders: { name: 'Snakes & Ladders', icon: 'fa-dice', color: '#22c55e' },
+    carrom: { name: 'Carrom', icon: 'fa-circle', color: '#f59e0b' },
+    chess: { name: 'Chess', icon: 'fa-chess', color: '#94a3b8' }
 };
 
 const HOW_TO_PLAY = {
@@ -55,7 +79,51 @@ const HOW_TO_PLAY = {
     simonsays: { title: 'Simon Says', steps: ['Watch the color sequence.', 'Repeat it by clicking colors.', 'Sequence grows each round.', 'One mistake ends the game.'] },
     whackamole: { title: 'Whack-a-Mole', steps: ['Moles pop up randomly.', 'Click/tap them to score.', 'You have 30 seconds.', 'Missed moles disappear.'] },
     numberguess: { title: 'Number Guess', steps: ['A secret number 1-100 is chosen.', 'Guess and get higher/lower hints.', 'Try to find it in fewest guesses.', 'Score = 100 - guesses used.'] },
+    rps: { title: 'Rock Paper Scissors', steps: ['Pick Rock, Paper, or Scissors.', 'Beat the CPU over 10 rounds.', 'Rock beats Scissors, Paper beats Rock, Scissors beats Paper.', 'Most wins takes the match.'] },
+    diceroll: { title: 'Dice Roll', steps: ['Roll the dice.', 'Guess if result is high (4-6) or low (1-3).', '10 rounds total.', 'Correct guesses score points.'] },
+    coinflip: { title: 'Coin Flip', steps: ['Pick heads or tails.', 'Flip the coin.', 'Match wins a point.', '10 rounds total.'] },
+    patternmemory: { title: 'Pattern Memory', steps: ['Watch the color sequence.', 'Repeat it by tapping cells.', 'Sequence grows each level.', 'One mistake ends the game.'] },
+    trivia: { title: 'Trivia Quiz', steps: ['A trivia question appears.', 'Pick the correct answer.', 'You have 30 seconds.', 'Each correct answer scores.'] },
+    reaction: { title: 'Reaction Time', steps: ['Wait for the box to turn green.', 'Click as fast as you can.', 'Too early = penalty.', '5 attempts, best time saved.'] },
+    oddoneout: { title: 'Odd One Out', steps: ['Find the different emoji among 16.', 'Click it to score.', 'You have 30 seconds.', 'Speed and accuracy matter.'] },
+    anagram: { title: 'Anagram Hunt', steps: ['A word is shown.', 'Type any anagram of it.', 'Each valid anagram scores.', '60 seconds total.'] },
+    tabletennis: { title: 'Table Tennis', steps: ['P1 uses W/S, P2 uses Arrow keys.', 'Hit the ball past opponent.', 'First to 7 wins.', 'Angle shots by hitting off-center.'] },
+    snakesladders: { title: 'Snakes & Ladders', steps: ['Roll the dice to move.', 'Land on a ladder to climb up.', 'Land on a snake to slide down.', 'First to 100 wins.'] },
+    carrom: { title: 'Carrom', steps: ['Drag the striker and release to flick.', 'Pocket your color coins.', 'Pocket the red queen for bonus.', 'Fouls pass the turn.'] },
+    chess: { title: 'Chess', steps: ['Tap a piece, then tap a square.', 'Standard chess rules apply.', 'Checkmate the enemy king to win.', 'Promotion auto-queens.'] },
 };
+
+const GAME_TAGS = {
+    snake: { difficulty: 'Medium', duration: '5 min', isNew: false },
+    tictactoe: { difficulty: 'Easy', duration: '3 min', isNew: false },
+    catcher: { difficulty: 'Medium', duration: '1 min', isNew: false },
+    clicker: { difficulty: 'Easy', duration: '1 min', isNew: false },
+    colorswitch: { difficulty: 'Hard', duration: '1 min', isNew: false },
+    memory: { difficulty: 'Medium', duration: '3 min', isNew: false },
+    pong: { difficulty: 'Medium', duration: '5 min', isNew: true },
+    twenty48: { difficulty: 'Hard', duration: '10 min', isNew: true },
+    mathquiz: { difficulty: 'Easy', duration: '1 min', isNew: true },
+    wordscramble: { difficulty: 'Medium', duration: '2 min', isNew: true },
+    capitalquiz: { difficulty: 'Medium', duration: '1 min', isNew: true },
+    typingspeed: { difficulty: 'Medium', duration: '1 min', isNew: true },
+    hangman: { difficulty: 'Medium', duration: '3 min', isNew: true },
+    simonsays: { difficulty: 'Hard', duration: '3 min', isNew: true },
+    whackamole: { difficulty: 'Easy', duration: '1 min', isNew: true },
+    numberguess: { difficulty: 'Easy', duration: '2 min', isNew: true },
+    rps: { difficulty: 'Easy', duration: '2 min', isNew: true },
+    diceroll: { difficulty: 'Easy', duration: '2 min', isNew: true },
+    coinflip: { difficulty: 'Easy', duration: '2 min', isNew: true },
+    patternmemory: { difficulty: 'Hard', duration: '3 min', isNew: true },
+    trivia: { difficulty: 'Medium', duration: '1 min', isNew: true },
+    reaction: { difficulty: 'Medium', duration: '1 min', isNew: true },
+    oddoneout: { difficulty: 'Easy', duration: '1 min', isNew: true },
+    anagram: { difficulty: 'Hard', duration: '2 min', isNew: true },
+    tabletennis: { difficulty: 'Medium', duration: '5 min', isNew: true },
+    snakesladders: { difficulty: 'Easy', duration: '10 min', isNew: true },
+    carrom: { difficulty: 'Hard', duration: '10 min', isNew: true },
+    chess: { difficulty: 'Hard', duration: '15 min', isNew: true }
+};
+
 const ACHIEVEMENTS = [
     { id: 'first_play', name: 'First Steps', desc: 'Play your first game', icon: 'fa-shoe-prints', reward: 25 },
     { id: 'five_plays', name: 'Regular', desc: 'Play 5 games', icon: 'fa-gamepad', reward: 50 },
@@ -83,9 +151,16 @@ class JTBPortal {
     constructor() {
         this.activeCleanup = null;
         this.stats = this.loadStats();
+        this.ratings = this.loadRatings();
         this.progress = this.loadProgress();
+        this.muted = localStorage.getItem('jtb_muted') === '1';
+        this.highContrast = localStorage.getItem('jtb_hc') === '1';
         this.init();
         this.renderStats();
+        this.pageSize = 8;
+        this.loadedCount = this.pageSize;
+        this.applyPagination();
+        this.updateLoadMoreButton();
         this.renderTopBar();
         this.registerSW();
         this.setupInstallPrompt();
@@ -94,10 +169,21 @@ class JTBPortal {
         this.dailyLogin();
         this.checkAchievements();
         this.applySkin(this.progress.activeSkin || 'default');
+        if (this.highContrast) document.body.classList.add('high-contrast');
+        this.enhanceAccessibility();
+        this.renderTagsOnCards();
+        this.updateCategoryCounts();
+        this.updateGamesCount(this.loadedCount);
+        this.renderGameOfWeek();
+        this.renderRecommended();
+        this.updateMuteButton();
         this.handleDeepLink();
+        this.renderDailyChallenge();
+        this.renderRecentlyPlayed();
     }
 
     init() { window.app = this; }
+    // mute button init moved to constructor tail
 
     loadStats() {
         try {
@@ -111,17 +197,71 @@ class JTBPortal {
         return JSON.parse(JSON.stringify(DEFAULT_STATS));
     }
     saveStats() { try { localStorage.setItem('jtb_stats', JSON.stringify(this.stats)); } catch (e) {} }
+    loadRatings() {
+        try { return JSON.parse(localStorage.getItem('jtb_ratings') || '{}'); } catch (e) { return {}; }
+    }
+    saveRatings() { try { localStorage.setItem('jtb_ratings', JSON.stringify(this.ratings)); } catch (e) {} }
+    getAverageRating(gameId) {
+        const r = this.ratings[gameId];
+        if (!r || !r.length) return this.stats[gameId]?.rating || 0;
+        return r.reduce((a,b)=>a+b,0) / r.length;
+    }
+    rateGame(gameId, rating) {
+        this.ratings[gameId] = this.ratings[gameId] || [];
+        // one rating per player: replace last? We'll push (allow multiple) but track user rating separately
+        const userRatings = this.ratings[gameId + '_user'] || {};
+        const player = this.getPlayerName() || 'Guest';
+        // store user's rating
+        if (!this.ratings[gameId + '_user']) this.ratings[gameId + '_user'] = {};
+        const prev = this.ratings[gameId + '_user'][player];
+        // adjust aggregate: remove prev if exists
+        if (prev !== undefined) {
+            const arr = this.ratings[gameId];
+            const i = arr.indexOf(prev);
+            if (i >= 0) arr.splice(i, 1);
+        }
+        this.ratings[gameId].push(rating);
+        this.ratings[gameId + '_user'][player] = rating;
+        this.saveRatings();
+        this.renderRatingWidget(gameId);
+        this.renderStats();
+        this.playSound('click');
+        this.toast(`Rated ${rating} star${rating>1?'s':''}`, 'fa-star', 'amber');
+    }
+    renderRatingWidget(gameId) {
+        const widget = document.getElementById('rating-widget');
+        if (!widget) return;
+        const avg = this.getAverageRating(gameId);
+        const count = (this.ratings[gameId] || []).length;
+        const player = this.getPlayerName() || 'Guest';
+        const userRating = (this.ratings[gameId + '_user'] || {})[player] || 0;
+        widget.classList.remove('hidden');
+        document.getElementById('rating-avg').innerText = avg.toFixed(1);
+        document.getElementById('rating-count').innerText = count;
+        const stars = document.getElementById('rating-stars');
+        stars.innerHTML = '';
+        for (let i = 1; i <= 5; i++) {
+            const btn = document.createElement('button');
+            btn.className = 'text-lg transition hover:scale-125 touch-manipulation ' + (i <= userRating ? 'text-amber-400' : 'text-slate-600');
+            btn.innerHTML = '<i class="fa-solid fa-star"></i>';
+            btn.addEventListener('click', () => this.rateGame(gameId, i));
+            btn.addEventListener('touchstart', (e) => { e.preventDefault(); this.rateGame(gameId, i); }, { passive: false });
+            stars.appendChild(btn);
+        }
+    }
+
     formatPlays(n) { if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k'; return String(n); }
     renderStats() {
         document.querySelectorAll('#games-grid > div[data-game]').forEach(card => {
             const gameId = card.getAttribute('data-game');
             const s = this.stats[gameId] || { plays: 0, rating: 0 };
+            const avgRating = this.getAverageRating(gameId);
             if (!card.querySelector('.rating-badge')) {
                 const badge = document.createElement('div');
-                badge.className = 'rating-badge absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-lg bg-slate-900/80 border border-slate-700 text-[11px] font-bold text-amber-400 backdrop-blur-sm';
-                badge.innerHTML = '<i class="fa-solid fa-star text-[10px]"></i> <span class="rating-value">' + s.rating.toFixed(1) + '</span>';
+                badge.className = 'rating-badge absolute top-3 right-12 flex items-center gap-1 px-2 py-1 rounded-lg bg-slate-900/80 border border-slate-700 text-[11px] font-bold text-amber-400 backdrop-blur-sm';
+                badge.innerHTML = '<i class="fa-solid fa-star text-[10px]"></i> <span class="rating-value">' + avgRating.toFixed(1) + '</span>';
                 card.appendChild(badge);
-            } else card.querySelector('.rating-value').innerText = s.rating.toFixed(1);
+            } else card.querySelector('.rating-value').innerText = avgRating.toFixed(1);
             let playsEl = card.querySelector('.plays-count');
             if (!playsEl) {
                 const footer = card.querySelector('.mt-auto');
@@ -134,14 +274,24 @@ class JTBPortal {
     loadProgress() {
         try {
             const raw = localStorage.getItem('jtb_progress');
-            if (raw) return JSON.parse(raw);
+            if (raw) {
+                const p = JSON.parse(raw);
+                p.xp = p.xp || 0;
+                p.level = p.level || 1;
+                p.recentlyPlayed = p.recentlyPlayed || [];
+                p.dailyChallenge = p.dailyChallenge || { date: null, gameId: null, completed: false };
+                p.streakFreeze = p.streakFreeze || { count: 1, lastWeek: null };
+                p.badges = p.badges || [];
+                p.favorites = p.favorites || [];
+                return p;
+            }
         } catch (e) {}
-        return { coins: 0, streak: 0, lastLogin: null, gamesPlayed: 0, totalScore: 0, achievements: [], unlockedSkins: ['default'], activeSkin: 'default', referralCode: null, referredBy: null, referredCount: 0 };
+        return { coins: 0, streak: 0, lastLogin: null, gamesPlayed: 0, totalScore: 0, achievements: [], unlockedSkins: ['default'], activeSkin: 'default', referralCode: null, referredBy: null, referredCount: 0, xp: 0, level: 1, recentlyPlayed: [], dailyChallenge: { date: null, gameId: null, completed: false }, streakFreeze: { count: 1, lastWeek: null }, badges: [], favorites: [] };
     }
     saveProgress() { try { localStorage.setItem('jtb_progress', JSON.stringify(this.progress)); } catch (e) {} }
     renderTopBar() {
         const el = document.getElementById('stats-pill');
-        if (el) el.innerHTML = `<span class="flex items-center gap-1"><i class="fa-solid fa-fire text-orange-400"></i>${this.progress.streak}</span><span class="w-px h-3 bg-slate-700"></span><span class="flex items-center gap-1"><i class="fa-solid fa-coins text-amber-400"></i>${this.progress.coins}</span>`;
+        if (el) el.innerHTML = `<span class="flex items-center gap-1"><i class="fa-solid fa-star text-indigo-400"></i>Lv ${this.progress.level || 1}</span><span class="w-px h-3 bg-slate-700"></span><span class="flex items-center gap-1"><i class="fa-solid fa-fire text-orange-400"></i>${this.progress.streak}</span><span class="w-px h-3 bg-slate-700"></span><span class="flex items-center gap-1"><i class="fa-solid fa-coins text-amber-400"></i>${this.progress.coins}</span>`;
     }
     toast(msg, icon = 'fa-check-circle', color = 'indigo') {
         const t = document.createElement('div');
@@ -155,15 +305,38 @@ class JTBPortal {
         const today = new Date().toISOString().slice(0, 10);
         if (this.progress.lastLogin === today) return;
         const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
-        if (this.progress.lastLogin === yesterday) this.progress.streak += 1; else this.progress.streak = 1;
+        if (this.progress.lastLogin === yesterday) {
+            this.progress.streak += 1;
+        } else if (this.progress.lastLogin) {
+            // missed a day: try streak freeze
+            const week = this.getWeekKey();
+            if (this.progress.streakFreeze.count > 0 && this.progress.streakFreeze.lastWeek !== week) {
+                this.progress.streakFreeze.count -= 1;
+                this.progress.streakFreeze.lastWeek = week;
+                this.progress.streak += 1;
+                this.toast('Streak freeze used! Streak preserved.', 'fa-snowflake', 'cyan');
+            } else {
+                this.progress.streak = 1;
+            }
+        } else {
+            this.progress.streak = 1;
+        }
         this.progress.lastLogin = today;
         const reward = Math.min(10 + (this.progress.streak - 1) * 5, 60);
         this.progress.coins += reward;
+        this.progress.xp = (this.progress.xp || 0) + 5;
         this.saveProgress();
         this.renderTopBar();
         this.toast(`Daily reward: +${reward} coins (streak ${this.progress.streak})`, 'fa-gift', 'amber');
         this.checkAchievements();
     }
+    getWeekKey() {
+        const d = new Date();
+        const onejan = new Date(d.getFullYear(), 0, 1);
+        const week = Math.ceil((((d - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+        return d.getFullYear() + '-W' + week;
+    }
+
 
     checkAchievements() {
         const p = this.progress;
@@ -308,7 +481,11 @@ class JTBPortal {
     addScore(gameId, score) {
         const lb = this.getLeaderboard(gameId);
         const name = this.getPlayerName() || 'Guest';
-        lb.push({ name, score, date: new Date().toLocaleDateString() });
+        const _d = new Date();
+        const _dd = String(_d.getDate()).padStart(2, '0');
+        const _mm = String(_d.getMonth() + 1).padStart(2, '0');
+        const _yyyy = _d.getFullYear();
+        lb.push({ name, score, date: `${_dd}-${_mm}-${_yyyy}` });
         lb.sort((a, b) => b.score - a.score);
         const top = lb.slice(0, 10);
         localStorage.setItem('jtb_lb_' + gameId, JSON.stringify(top));
@@ -342,6 +519,8 @@ class JTBPortal {
         this.progress.totalScore += score;
         const lb = this.addScore(gameId, score);
         this.checkAchievementsByGame(gameId, score);
+        this.playSound('success'); this.vibrate(20);
+        this.addXP(Math.max(1, Math.floor(score / 5)));
         this.showShareCard(gameId, score, meta, lb);
     }
     checkAchievementsByGame(gameId, score) {
@@ -429,7 +608,7 @@ class JTBPortal {
             return `<div class="flex items-center gap-3 py-2 border-b border-slate-800/50 ${done ? '' : 'opacity-40'}">
                 <div class="w-9 h-9 rounded-xl ${done ? 'bg-amber-500/20 text-amber-400' : 'bg-slate-800 text-slate-500'} flex items-center justify-center"><i class="fa-solid ${a.icon}"></i></div>
                 <div class="flex-1"><div class="text-sm font-semibold text-slate-200">${a.name}</div><div class="text-[10px] text-slate-500">${a.desc}</div></div>
-                <span class="text-xs font-bold ${done ? 'text-emerald-400' : 'text-slate-600'}">${done ? '?' : '+' + a.reward}</span>
+                <span class="text-xs font-bold ${done ? 'text-emerald-400' : 'text-slate-600'}">${done ? '<i class="fa-solid fa-check"></i>' : '+' + a.reward}</span>
             </div>`;
         }).join('');
         const skinHtml = SKINS.map(s => {
@@ -442,11 +621,14 @@ class JTBPortal {
             </button>`;
         }).join('');
         this.showModal('Player Profile', `
-            <div class="grid grid-cols-3 gap-3 text-center mb-2">
+            <div class="grid grid-cols-4 gap-2 text-center mb-2">
+                <div class="bg-slate-950 rounded-xl p-3"><div class="text-xs text-slate-500">Level</div><div class="text-xl font-black text-indigo-400">${p.level || 1}</div></div>
                 <div class="bg-slate-950 rounded-xl p-3"><div class="text-xs text-slate-500">Streak</div><div class="text-xl font-black text-orange-400">${p.streak}<i class="fa-solid fa-fire text-base"></i></div></div>
                 <div class="bg-slate-950 rounded-xl p-3"><div class="text-xs text-slate-500">Coins</div><div class="text-xl font-black text-amber-400">${p.coins}<i class="fa-solid fa-coins text-base"></i></div></div>
-                <div class="bg-slate-950 rounded-xl p-3"><div class="text-xs text-slate-500">Games</div><div class="text-xl font-black text-indigo-400">${p.gamesPlayed}</div></div>
+                <div class="bg-slate-950 rounded-xl p-3"><div class="text-xs text-slate-500">Games</div><div class="text-xl font-black text-slate-200">${p.gamesPlayed}</div></div>
             </div>
+            <div class="text-xs text-slate-400 mb-2">XP: ${p.xp || 0} / ${((p.level||1)*100)} to next level. Streak freezes: ${p.streakFreeze?.count || 0}</div>
+            <div class="text-xs text-slate-500 mb-3">Badges: ${(p.badges||[]).length ? (p.badges||[]).join(', ') : 'None yet'}</div>
             <div class="flex gap-2 mb-3">
                 <button onclick="window.app.showLeaderboard('snake')" class="flex-1 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold">Leaderboards</button>
                 <button onclick="window.app.showReferral()" class="flex-1 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold">Referral</button>
@@ -455,6 +637,13 @@ class JTBPortal {
             <div class="max-h-48 overflow-y-auto">${achHtml}</div>
             <h4 class="text-sm font-bold text-slate-200 mt-3">Themes</h4>
             <div class="grid grid-cols-2 gap-2">${skinHtml}</div>
+            <div class="flex gap-2 mt-3">
+                <button onclick="window.app.enableNotifications()" class="flex-1 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold">Enable Reminders</button>
+            </div>
+            <div class="flex gap-2 mt-2">
+                <button onclick="window.app.exportProgress()" class="flex-1 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold">Export Save</button>
+                <button onclick="window.app.importProgress()" class="flex-1 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold">Import Save</button>
+            </div>
         `);
     }
 
@@ -476,14 +665,373 @@ class JTBPortal {
         }).join('');
         this.showModal('How to Play: ' + info.title, '<ul class="space-y-1">' + steps + '</ul>');
     }
+
+    applyPagination() {
+        const cards = Array.from(document.querySelectorAll('#games-grid > div'));
+        cards.forEach((card, idx) => {
+            if (card.dataset.hiddenByFilter === '1') { card.style.display = 'none'; return; }
+            card.style.display = (idx < this.loadedCount) ? 'flex' : 'none';
+        });
+    }
+    updateLoadMoreButton() {
+        const wrap = document.getElementById('load-more-wrap');
+        const btn = document.getElementById('load-more-btn');
+        if (!wrap || !btn) return;
+        const total = document.querySelectorAll('#games-grid > div').length;
+        if (this.loadedCount >= total) wrap.classList.add('hidden'); else wrap.classList.remove('hidden');
+    }
+    loadMoreGames() {
+        this.loadedCount += this.pageSize;
+        this.applyPagination();
+        this.updateLoadMoreButton();
+        this.enhanceAccessibility();
+        this.renderTagsOnCards();
+        this.updateGamesCount(this.loadedCount);
+        // re-apply current filter/search context
+        const q = (document.getElementById('game-search')?.value || '').trim();
+        if (q) this.searchGames();
+    }
+
+
+    ensureAudio() {
+        if (this.audioCtx) return this.audioCtx;
+        try { this.audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { this.audioCtx = null; }
+        return this.audioCtx;
+    }
+    playSound(type) {
+        if (this.muted) return;
+        const ctx = this.ensureAudio();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const tones = {
+            click: [[880, 0.05]],
+            success: [[660, 0.08], [990, 0.12]],
+            fail: [[220, 0.15]],
+            start: [[523, 0.08], [659, 0.08], [784, 0.12]],
+            end: [[784, 0.1], [659, 0.1], [523, 0.15]]
+        };
+        const seq = tones[type] || tones.click;
+        let t = now;
+        seq.forEach(([freq, dur]) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0.12, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+            osc.connect(gain); gain.connect(ctx.destination);
+            osc.start(t); osc.stop(t + dur);
+            t += dur;
+        });
+    }
+    vibrate(ms) {
+        if (this.muted) return;
+        if (navigator.vibrate) try { navigator.vibrate(ms); } catch (e) {}
+    }
+    toggleMute() {
+        this.muted = !this.muted;
+        localStorage.setItem('jtb_muted', this.muted ? '1' : '0');
+        this.updateMuteButton();
+        this.playSound('click');
+    }
+    updateMuteButton() {
+        const btn = document.getElementById('mute-btn');
+        if (btn) btn.innerHTML = this.muted ? '<i class="fa-solid fa-volume-xmark"></i>' : '<i class="fa-solid fa-volume-high"></i>';
+    }
+    toggleHighContrast() {
+        this.highContrast = !this.highContrast;
+        localStorage.setItem('jtb_hc', this.highContrast ? '1' : '0');
+        document.body.classList.toggle('high-contrast', this.highContrast);
+        this.playSound('click');
+    }
+    enhanceAccessibility() {
+        // make game cards keyboard accessible
+        document.querySelectorAll('#games-grid > div[data-game]').forEach(card => {
+            card.setAttribute('role', 'button');
+            card.setAttribute('tabindex', '0');
+            const name = card.getAttribute('data-name') || 'game';
+            card.setAttribute('aria-label', 'Play ' + name);
+            if (!card.dataset.a11yBound) {
+                card.dataset.a11yBound = '1';
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+                });
+            }
+        });
+    }
+    exportProgress() {
+        const data = { stats: this.stats, progress: this.progress, player: localStorage.getItem('jtb_player') };
+        const str = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+        navigator.clipboard?.writeText(str).then(() => this.toast('Progress copied to clipboard', 'fa-copy', 'indigo')).catch(() => this.toast('Copy failed', 'fa-triangle-exclamation', 'rose'));
+        return str;
+    }
+    importProgress() {
+        const code = prompt('Paste your progress code:');
+        if (!code) return;
+        try {
+            const data = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
+            if (data.stats) { this.stats = data.stats; this.saveStats(); this.renderStats(); }
+            if (data.progress) { this.progress = data.progress; this.saveProgress(); this.renderTopBar(); this.applySkin(this.progress.activeSkin || 'default'); }
+            if (data.player) { localStorage.setItem('jtb_player', data.player); this.initPlayerName(); }
+            this.toast('Progress imported!', 'fa-check', 'emerald');
+        } catch (e) { this.toast('Invalid code', 'fa-triangle-exclamation', 'rose'); }
+    }
+
+
+    addXP(amount) {
+        this.progress.xp = (this.progress.xp || 0) + amount;
+        const newLevel = Math.floor(this.progress.xp / 100) + 1;
+        if (newLevel > (this.progress.level || 1)) {
+            this.progress.level = newLevel;
+            this.toast(`Level up! You are now level ${newLevel}`, 'fa-arrow-up', 'emerald');
+            this.playSound('success');
+        }
+        this.saveProgress();
+        this.renderTopBar();
+    }
+    getLevel() { return this.progress.level || 1; }
+    getXP() { return this.progress.xp || 0; }
+
+
+    getGameIds() { return Object.keys(GAME_META); }
+    getDailyChallengeGame() {
+        const ids = this.getGameIds();
+        const now = new Date();
+        const start = new Date(now.getFullYear(), 0, 0);
+        const dayOfYear = Math.floor((now - start) / 86400000);
+        return ids[dayOfYear % ids.length];
+    }
+    ensureDailyChallenge() {
+        const today = new Date().toISOString().slice(0, 10);
+        const dc = this.progress.dailyChallenge || { date: null, gameId: null, completed: false };
+        if (dc.date !== today) {
+            dc.date = today;
+            dc.gameId = this.getDailyChallengeGame();
+            dc.completed = false;
+            this.progress.dailyChallenge = dc;
+            this.saveProgress();
+        }
+        return dc;
+    }
+    renderDailyChallenge() {
+        const el = document.getElementById('daily-challenge');
+        if (!el) return;
+        const dc = this.ensureDailyChallenge();
+        const meta = GAME_META[dc.gameId] || { name: dc.gameId, color: '#6366f1' };
+        const done = dc.completed;
+        el.className = 'fade-in';
+        el.innerHTML = `
+            <div class="glass panel p-5 flex flex-col md:flex-row items-center justify-between gap-4 border-indigo-500/30">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl" style="background:${meta.color}22;color:${meta.color}"><i class="fa-solid ${meta.icon}"></i></div>
+                    <div>
+                        <div class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Daily Challenge</div>
+                        <div class="text-base font-bold text-slate-100">${meta.name} ${done ? '- Completed! ??' : ''}</div>
+                        <div class="text-xs text-slate-400">${done ? 'Come back tomorrow for a new challenge.' : 'Play today to earn +50 coins & a badge.'}</div>
+                    </div>
+                </div>
+                ${done ? '' : `<button onclick="window.app.openGame('${dc.gameId}')" class="btn-primary px-6 py-2.5 rounded-xl text-sm font-bold">Play Challenge</button>`}
+            </div>
+        `;
+        el.classList.remove('hidden');
+    }
+    renderRecentlyPlayed() {
+        const el = document.getElementById('recently-played');
+        if (!el) return;
+        const rp = this.progress.recentlyPlayed || [];
+        if (rp.length === 0) { el.classList.add('hidden'); return; }
+        const items = rp.map(g => {
+            const m = GAME_META[g]; if (!m) return '';
+            return `<button onclick="window.app.openGame('${g}')" class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/60 border border-slate-800 text-slate-300 text-xs font-semibold hover:border-indigo-500/50 transition"><i class="fa-solid ${m.icon}" style="color:${m.color}"></i>${m.name}</button>`;
+        }).join('');
+        el.innerHTML = `<div class="flex items-center gap-2 flex-wrap"><span class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Recently Played:</span>${items}</div>`;
+        el.classList.remove('hidden');
+    }
+    onGamePlayed(gameId) {
+        // recently played
+        const rp = this.progress.recentlyPlayed || [];
+        const filtered = rp.filter(g => g !== gameId);
+        filtered.unshift(gameId);
+        this.progress.recentlyPlayed = filtered.slice(0, 5);
+        // daily challenge
+        const dc = this.ensureDailyChallenge();
+        if (dc.gameId === gameId && !dc.completed) {
+            dc.completed = true;
+            this.progress.dailyChallenge = dc;
+            this.progress.coins += 50;
+            this.progress.xp = (this.progress.xp || 0) + 50;
+            if (!this.progress.badges.includes('daily_challenge')) this.progress.badges.push('daily_challenge');
+            this.saveProgress();
+            this.renderTopBar();
+            this.toast('Daily Challenge complete! +50 coins', 'fa-star', 'amber');
+            this.renderDailyChallenge();
+        }
+        this.saveProgress();
+        this.renderRecentlyPlayed();
+    }
+
+
+    async enableNotifications() {
+        if (!('Notification' in window)) { this.toast('Notifications not supported', 'fa-triangle-exclamation', 'rose'); return; }
+        const perm = await Notification.requestPermission();
+        if (perm === 'granted') {
+            localStorage.setItem('jtb_notif', '1');
+            this.toast('Daily reminders enabled', 'fa-bell', 'emerald');
+            new Notification('JTB Arcade', { body: 'Daily challenge awaits! Come back and play.' });
+        } else {
+            this.toast('Permission denied', 'fa-triangle-exclamation', 'rose');
+        }
+    }
+
+
+    isFavorite(gameId) { return (this.progress.favorites || []).includes(gameId); }
+    toggleFavorite(gameId, e) {
+        if (e) e.stopPropagation();
+        this.progress.favorites = this.progress.favorites || [];
+        const idx = this.progress.favorites.indexOf(gameId);
+        if (idx >= 0) this.progress.favorites.splice(idx, 1);
+        else this.progress.favorites.push(gameId);
+        this.saveProgress();
+        this.renderTagsOnCards();
+        this.playSound('click');
+    }
+    renderTagsOnCards() {
+        document.querySelectorAll('#games-grid > div[data-game]').forEach(card => {
+            const gameId = card.getAttribute('data-game');
+            const tags = GAME_TAGS[gameId] || {};
+            // remove old tag/fav containers
+            card.querySelectorAll('.tag-row, .fav-btn, .new-badge').forEach(n => n.remove());
+            // NEW badge
+            if (tags.isNew) {
+                const nb = document.createElement('div');
+                nb.className = 'new-badge absolute top-3 left-3 px-2 py-0.5 rounded-md bg-emerald-500 text-white text-[9px] font-black uppercase tracking-wider';
+                nb.innerText = 'NEW';
+                card.appendChild(nb);
+            }
+            // fav button
+            const fav = document.createElement('button');
+            fav.className = 'fav-btn absolute top-3 right-3 w-7 h-7 rounded-lg bg-slate-900/80 border border-slate-700 flex items-center justify-center text-xs transition hover:scale-110 touch-manipulation';
+            fav.innerHTML = this.isFavorite(gameId) ? '<i class="fa-solid fa-star text-amber-400"></i>' : '<i class="fa-regular fa-star text-slate-400"></i>';
+            fav.setAttribute('aria-label', 'Toggle favorite');
+            fav.addEventListener('click', (e) => this.toggleFavorite(gameId, e));
+            fav.addEventListener('touchstart', (e) => { e.preventDefault(); e.stopPropagation(); this.toggleFavorite(gameId, e); }, { passive: false });
+            card.appendChild(fav);
+            // adjust rating badge position to not overlap? rating badge at right-3; fav at right-12 (48px). Fine.
+            // tag row in footer? add difficulty/duration to footer
+            const footer = card.querySelector('.mt-auto');
+            if (footer && !footer.querySelector('.tag-row')) {
+                const tr = document.createElement('div');
+                tr.className = 'tag-row flex gap-1.5 mt-2';
+                tr.innerHTML = `<span class="px-2 py-0.5 rounded-md bg-slate-800 text-slate-400 text-[9px] font-semibold">${tags.difficulty || ''}</span><span class="px-2 py-0.5 rounded-md bg-slate-800 text-slate-400 text-[9px] font-semibold">${tags.duration || ''}</span>`;
+                footer.appendChild(tr);
+            }
+        });
+    }
+    renderGameOfWeek() {
+        const el = document.getElementById('game-of-week');
+        if (!el) return;
+        const ids = this.getGameIds();
+        const now = new Date();
+        const week = Math.floor((now - new Date(now.getFullYear(),0,1)) / (7*86400000));
+        const gameId = ids[week % ids.length];
+        const meta = GAME_META[gameId];
+        if (!meta) { el.classList.add('hidden'); return; }
+        el.innerHTML = `
+            <div class="glass panel p-5 flex flex-col md:flex-row items-center justify-between gap-4 border-amber-500/30">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl" style="background:${meta.color}22;color:${meta.color}"><i class="fa-solid ${meta.icon}"></i></div>
+                    <div>
+                        <div class="text-[10px] text-amber-400 uppercase font-bold tracking-widest">Game of the Week</div>
+                        <div class="text-base font-bold text-slate-100">${meta.name}</div>
+                        <div class="text-xs text-slate-400">Try this week's featured game.</div>
+                    </div>
+                </div>
+                <button onclick="window.app.openGame('${gameId}')" class="btn-primary px-6 py-2.5 rounded-xl text-sm font-bold">Play Now</button>
+            </div>
+        `;
+        el.classList.remove('hidden');
+    }
+    renderRecommended() {
+        const el = document.getElementById('recommended');
+        if (!el) return;
+        const rp = this.progress.recentlyPlayed || [];
+        // recommend games in same category as most played? fallback: games not recently played
+        const all = this.getGameIds();
+        const notRecent = all.filter(g => !rp.includes(g));
+        const picks = (notRecent.length ? notRecent : all).slice(0, 4);
+        if (picks.length === 0) { el.classList.add('hidden'); return; }
+        const items = picks.map(g => {
+            const m = GAME_META[g];
+            return `<button onclick="window.app.openGame('${g}')" class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/60 border border-slate-800 text-slate-300 text-xs font-semibold hover:border-indigo-500/50 transition"><i class="fa-solid ${m.icon}" style="color:${m.color}"></i>${m.name}</button>`;
+        }).join('');
+        el.innerHTML = `<div class="flex items-center gap-2 flex-wrap"><span class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Recommended for you:</span>${items}</div>`;
+        el.classList.remove('hidden');
+    }
+    sortGames(mode) {
+        const grid = document.getElementById('games-grid');
+        if (!grid) return;
+        const cards = Array.from(grid.querySelectorAll('div[data-game]'));
+        cards.sort((a, b) => {
+            const ga = a.getAttribute('data-game'), gb = b.getAttribute('data-game');
+            if (mode === 'name') return (a.getAttribute('data-name')||'').localeCompare(b.getAttribute('data-name')||'');
+            if (mode === 'plays') return (this.stats[gb]?.plays||0) - (this.stats[ga]?.plays||0);
+            if (mode === 'rating') return (this.stats[gb]?.rating||0) - (this.stats[ga]?.rating||0);
+            return 0;
+        });
+        // default: original order by index? We'll just re-append sorted
+        cards.forEach(c => grid.appendChild(c));
+        this.applyPagination();
+        this.renderTagsOnCards();
+    }
+    showEmbed(gameId) {
+        const g = gameId || this.currentGame;
+        const meta = GAME_META[g] || { name: g };
+        const url = `${window.location.origin}${window.location.pathname}?game=${g}`;
+        const code = `<iframe src="${url}" width="400" height="500" frameborder="0" allowfullscreen></iframe>`;
+        this.showModal('Embed ' + meta.name, `
+            <p class="text-xs text-slate-400 mb-2">Copy this code to embed the game on your site.</p>
+            <textarea readonly class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 font-mono h-24">${code}</textarea>
+            <button onclick="navigator.clipboard.writeText(this.previousElementSibling.value); window.app.toast('Copied','fa-copy','indigo')" class="w-full btn-primary px-4 py-2.5 rounded-xl text-xs font-bold mt-2">Copy Code</button>
+        `);
+    }
+
+
+    updateCategoryCounts() {
+        const chips = document.querySelectorAll('.chip');
+        chips.forEach(chip => {
+            const onclick = chip.getAttribute('onclick') || '';
+            const m = onclick.match(/filterCategory\('([^']+)'\s*,/);
+            if (!m) return;
+            const cat = m[1];
+            const cards = Array.from(document.querySelectorAll('#games-grid > div'));
+            let count = 0;
+            cards.forEach(c => {
+                if (cat === 'all') count++;
+                else if (cat === 'favorites') { if (this.isFavorite(c.getAttribute('data-game'))) count++; }
+                else if (c.getAttribute('data-category') === cat) count++;
+            });
+            // append count to label if not already
+            const base = chip.textContent.replace(/\s*\(\d+\)$/, '');
+            chip.textContent = base + ' (' + count + ')';
+        });
+    }
+    updateGamesCount(visible) {
+        const el = document.getElementById('games-count');
+        if (!el) return;
+        const total = document.querySelectorAll('#games-grid > div').length;
+        el.innerText = (visible !== undefined ? visible : total) + ' / ' + total + ' games';
+    }
+
     showHome() {
         if (typeof this.activeCleanup === 'function') { this.activeCleanup(); this.activeCleanup = null; }
         document.getElementById('home-view').classList.remove('hidden');
         document.getElementById('game-view').classList.add('hidden');
+        const rw = document.getElementById('rating-widget'); if (rw) rw.classList.add('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     async openGame(gameId) {
         this.currentGame = gameId;
+        this.playSound('start'); this.vibrate(10);
         this.ensurePlayerName();
         document.getElementById('home-view').classList.add('hidden');
         document.getElementById('game-view').classList.remove('hidden');
@@ -493,6 +1041,8 @@ class JTBPortal {
         if (this.stats[gameId]) { this.stats[gameId].plays += 1; this.saveStats(); this.renderStats(); }
         this.progress.gamesPlayed += 1;
         this.saveProgress();
+        this.addXP(10);
+        this.onGamePlayed(gameId);
         this.renderTopBar();
         this.checkAchievements();
         try {
@@ -500,6 +1050,7 @@ class JTBPortal {
             if (gameModule && typeof gameModule.render === 'function') {
                 const cleanupFn = gameModule.render(container);
                 if (typeof cleanupFn === 'function') this.activeCleanup = cleanupFn;
+                this.renderRatingWidget(gameId);
                 const seen = JSON.parse(localStorage.getItem('jtb_seen_htp') || '[]');
                 if (!seen.includes(gameId)) { seen.push(gameId); localStorage.setItem('jtb_seen_htp', JSON.stringify(seen)); setTimeout(() => this.showHowToPlay(gameId), 400); }
             } else container.innerHTML = '<p class="text-rose-400 text-xs">Error: Game module failed to load.</p>';
@@ -514,8 +1065,26 @@ class JTBPortal {
         const cards = document.querySelectorAll('#games-grid > div');
         let visible = 0;
         cards.forEach(card => {
-            if (cat === 'all' || card.getAttribute('data-category') === cat) { card.style.display = 'flex'; visible++; } else card.style.display = 'none';
+            const gameId = card.getAttribute('data-game');
+            let match = false;
+            if (cat === 'all') match = true;
+            else if (cat === 'favorites') match = this.isFavorite(gameId);
+            else match = card.getAttribute('data-category') === cat;
+            card.dataset.hiddenByFilter = match ? '0' : '1';
+            if (match) visible++;
         });
+        if (cat === 'all') {
+            this.loadedCount = this.pageSize;
+            this.applyPagination();
+            this.updateLoadMoreButton();
+        } else {
+            cards.forEach(card => {
+                if (card.dataset.hiddenByFilter === '0') card.style.display = 'flex';
+                else card.style.display = 'none';
+            });
+            const wrap = document.getElementById('load-more-wrap');
+            if (wrap) wrap.classList.add('hidden');
+        }
         const empty = document.getElementById('empty-state');
         if (empty) empty.classList.toggle('hidden', visible !== 0);
     }
@@ -523,12 +1092,22 @@ class JTBPortal {
         let query = document.getElementById('game-search').value.toLowerCase().trim();
         const cards = document.querySelectorAll('#games-grid > div');
         let visible = 0;
+        if (!query) {
+            this.applyPagination();
+            this.updateLoadMoreButton();
+            return;
+        }
         cards.forEach(card => {
             let name = (card.getAttribute('data-name') || '').toLowerCase();
-            if (name.includes(query)) { card.style.display = 'flex'; visible++; } else card.style.display = 'none';
+            const match = name.includes(query) && card.dataset.hiddenByFilter !== '1';
+            card.style.display = match ? 'flex' : 'none';
+            if (match) visible++;
         });
+        const wrap = document.getElementById('load-more-wrap');
+        if (wrap) wrap.classList.add('hidden');
         const empty = document.getElementById('empty-state');
         if (empty) empty.classList.toggle('hidden', visible !== 0);
+        this.updateGamesCount(visible);
     }
 
     registerSW() {

@@ -185,7 +185,7 @@ export function render(container) {
         } else {
             initGame();
             if (gameInterval) clearInterval(gameInterval);
-            gameInterval = setInterval(move, 120);
+            gameInterval = setInterval(move, 180);
         }
     });
 
@@ -193,7 +193,7 @@ export function render(container) {
         overlay.classList.add('hidden');
         initGame();
         if (gameInterval) clearInterval(gameInterval);
-        gameInterval = setInterval(move, 120);
+        gameInterval = setInterval(move, 180);
     });
 
 

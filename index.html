@@ -187,6 +187,12 @@
             body { padding: 0; }
             main { padding: 1rem; }
         }
+
+        body.high-contrast { background: #000 !important; color: #fff; }
+        body.high-contrast .glass, body.high-contrast .panel { background: #111 !important; border-color: #fff !important; }
+        body.high-contrast .card { border-color: #fff !important; }
+        body.high-contrast .chip { border-color: #fff !important; }
+        body.high-contrast a, body.high-contrast button { outline-color: #ff0 !important; }
     </style>
 </head>
 <body class="antialiased selection:bg-indigo-500 selection:text-white">
@@ -217,6 +223,12 @@
             </div>
 
             <nav class="flex items-center space-x-2">
+                <button id="mute-btn" onclick="window.app.toggleMute()" class="flex items-center justify-center w-9 h-9 rounded-xl bg-slate-900/60 border border-slate-800 text-slate-300 hover:border-indigo-500/50 transition" aria-label="Toggle sound">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+                <button onclick="window.app.toggleHighContrast()" class="flex items-center justify-center w-9 h-9 rounded-xl bg-slate-900/60 border border-slate-800 text-slate-300 hover:border-indigo-500/50 transition" aria-label="Toggle high contrast">
+                    <i class="fa-solid fa-circle-half-stroke"></i>
+                </button>
                 <button onclick="window.app.showProfile()" class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/60 border border-slate-800 text-slate-300 text-xs font-semibold hover:border-indigo-500/50 transition">
                     <i class="fa-solid fa-trophy text-amber-400"></i> <span class="hidden md:inline">Profile</span>
                 </button>
@@ -258,6 +270,18 @@
                 </div>
             </section>
 
+            <!-- Daily Challenge -->
+            <div id="daily-challenge" class="hidden"></div>
+
+            <!-- Recently Played -->
+            <div id="recently-played" class="hidden"></div>
+
+            <!-- Game of the Week -->
+            <div id="game-of-week" class="hidden"></div>
+
+            <!-- Recommended -->
+            <div id="recommended" class="hidden"></div>
+
             <!-- Categories & Search -->
             <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
                 <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 scrollbar-hide" id="category-filters">
@@ -270,10 +294,17 @@
                     <button onclick="window.app.filterCategory('education', this)" class="chip shrink-0">📚 Education</button>
                 </div>
 
+                <span id="games-count" class="text-xs text-slate-400 font-semibold shrink-0"></span>
                 <div class="relative w-full md:w-80 shrink-0">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
                     <input type="text" id="game-search" oninput="window.app.searchGames()" placeholder="Search games..." class="search-input">
                 </div>
+                <select id="sort-select" onchange="window.app.sortGames(this.value)" class="bg-slate-900 border border-slate-800 rounded-2xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 transition">
+                    <option value="default">Sort: Default</option>
+                    <option value="name">Sort: Name</option>
+                    <option value="plays">Sort: Most Played</option>
+                    <option value="rating">Sort: Top Rated</option>
+                </select>
             </div>
 
             <!-- Games Grid -->
@@ -537,8 +568,185 @@
                     </div>
                 </div>
 
-</div>
 
+                <!-- Game Card: Rock Paper Scissors -->
+                <div data-category="arcade" data-name="rock paper scissors" data-game="rps" onclick="window.app.openGame('rps')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-violet-500/10 text-violet-400 border-violet-500/20 mb-3"><i class="fa-solid fa-hand-scissors"></i></div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Rock Paper Scissors</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Arcade</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Beat the CPU over 10 rounds.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">10 Rounds</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+                <!-- Game Card: Dice Roll -->
+                <div data-category="arcade" data-name="dice roll" data-game="diceroll" onclick="window.app.openGame('diceroll')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-indigo-500/10 text-indigo-400 border-indigo-500/20 mb-3"><i class="fa-solid fa-dice-six"></i></div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Dice Roll</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Arcade</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Guess high or low. 10 rounds.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">10 Rounds</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+                <!-- Game Card: Coin Flip -->
+                <div data-category="arcade" data-name="coin flip" data-game="coinflip" onclick="window.app.openGame('coinflip')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-amber-500/10 text-amber-400 border-amber-500/20 mb-3"><i class="fa-solid fa-coins"></i></div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Coin Flip</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Arcade</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Heads or tails. 10 rounds.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">10 Rounds</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+                <!-- Game Card: Pattern Memory -->
+                <div data-category="memory" data-name="pattern memory" data-game="patternmemory" onclick="window.app.openGame('patternmemory')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-pink-500/10 text-pink-400 border-pink-500/20 mb-3"><i class="fa-solid fa-brain"></i></div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Pattern Memory</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Memory</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Repeat the growing color pattern.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">Sequence</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+                <!-- Game Card: Trivia Quiz -->
+                <div data-category="education" data-name="trivia quiz" data-game="trivia" onclick="window.app.openGame('trivia')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-blue-500/10 text-blue-400 border-blue-500/20 mb-3"><i class="fa-solid fa-circle-question"></i></div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Trivia Quiz</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Education</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">General knowledge questions. 30s.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">30s Round</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+                <!-- Game Card: Reaction Time -->
+                <div data-category="reflex" data-name="reaction time" data-game="reaction" onclick="window.app.openGame('reaction')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-green-500/10 text-green-400 border-green-500/20 mb-3"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Reaction Time</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Reflex</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Click when green. 5 attempts.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">Reflex</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+                <!-- Game Card: Odd One Out -->
+                <div data-category="puzzle" data-name="odd one out" data-game="oddoneout" onclick="window.app.openGame('oddoneout')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-teal-500/10 text-teal-400 border-teal-500/20 mb-3"><i class="fa-solid fa-eye"></i></div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Odd One Out</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Puzzle</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Find the different emoji. 30s.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">30s Round</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+                <!-- Game Card: Anagram Hunt -->
+                <div data-category="education" data-name="anagram hunt" data-game="anagram" onclick="window.app.openGame('anagram')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-purple-500/10 text-purple-400 border-purple-500/20 mb-3"><i class="fa-solid fa-spell-check"></i></div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Anagram Hunt</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Education</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Find anagrams of a word. 60s.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">60s Round</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+
+
+
+            
+                <!-- Game Card: Table Tennis -->
+                <div data-category="arcade" data-name="table tennis" data-game="tabletennis" onclick="window.app.openGame('tabletennis')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-rose-500/10 text-rose-400 border-rose-500/20 mb-3"><i class="fa-solid fa-table-tennis-paddle-ball"></i></div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Table Tennis</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Arcade</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">2-player paddle duel. First to 7.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">2 Player</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+                <!-- Game Card: Snakes & Ladders -->
+                <div data-category="puzzle" data-name="snakes and ladders" data-game="snakesladders" onclick="window.app.openGame('snakesladders')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-green-500/10 text-green-400 border-green-500/20 mb-3"><i class="fa-solid fa-dice"></i></div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Snakes & Ladders</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Puzzle</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Classic board race for 2 players.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">2-4 Player</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+                <!-- Game Card: Carrom -->
+                <div data-category="arcade" data-name="carrom" data-game="carrom" onclick="window.app.openGame('carrom')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-amber-500/10 text-amber-400 border-amber-500/20 mb-3"><i class="fa-solid fa-circle"></i></div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Carrom</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Arcade</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Flick striker, pocket your coins. 2P.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">2-4 Player</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+                <!-- Game Card: Chess -->
+                <div data-category="puzzle" data-name="chess" data-game="chess" onclick="window.app.openGame('chess')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-slate-500/10 text-slate-300 border-slate-500/20 mb-3"><i class="fa-solid fa-chess"></i></div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Chess</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Puzzle</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Classic strategy for 2 players.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">2 Player</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div id="load-more-wrap" class="text-center pt-2">
+                <button id="load-more-btn" onclick="window.app.loadMoreGames()" class="btn-primary px-8 py-3 rounded-xl text-sm font-bold">Load More Games</button>
+            </div>
 
             <!-- Empty state -->
             <div id="empty-state" class="hidden text-center py-16">
@@ -560,15 +768,30 @@
                 <button onclick="window.app.showHowToPlay()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600/80 border border-indigo-500 text-white text-xs font-semibold hover:bg-indigo-500 transition flex-shrink-0">
                     <i class="fa-solid fa-circle-question"></i> How to Play
                 </button>
+                <button onclick="window.app.showEmbed()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-300 text-xs font-semibold hover:bg-slate-700 transition flex-shrink-0">
+                    <i class="fa-solid fa-code"></i> Embed
+                </button>
             </div>
 
             <div id="game-container" class="min-h-[560px] bg-slate-900/50 border border-slate-800 rounded-3xl p-6 md:p-10 flex flex-col items-center justify-center">
                 <div class="skeleton w-64 h-8 mb-3"></div>
                 <div class="skeleton w-full h-32 rounded-xl"></div>
             </div>
+
+            <div id="rating-widget" class="hidden game-header fade-in flex items-center justify-between flex-wrap gap-3">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-slate-400 font-semibold">Rate this game:</span>
+                    <div id="rating-stars" class="flex gap-1"></div>
+                </div>
+                <div class="text-xs text-slate-400">
+                    Average: <span id="rating-avg" class="text-amber-400 font-bold">-</span> (<span id="rating-count">0</span> ratings)
+                </div>
+            </div>
         </section>
     </main>
 
+    <!-- PeerJS for online multiplayer -->
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
     <!-- Load Core App Script as ES module -->
     <script type="module" src="./js/app.js"></script>
 </body>

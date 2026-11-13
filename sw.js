@@ -1,10 +1,11 @@
-const CACHE = 'jtb-arcade-v1';
+const CACHE = 'jtb-arcade-v2';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './icon.svg',
   './js/app.js',
+  './js/online.js',
   './js/games/snake.js',
   './js/games/tictactoe.js',
   './js/games/catcher.js',
