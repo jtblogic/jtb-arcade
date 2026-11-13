@@ -37,6 +37,7 @@
             font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-h-screen: flex;
             overflow-x: hidden;
+            touch-action: manipulation;
         }
 
         body::before {
@@ -78,6 +79,9 @@
             transform: translateY(-1px);
         }
         .btn-primary:active { transform: translateY(0); }
+
+        .touch-none { touch-action: none; }
+        .touch-manipulation { touch-action: manipulation; }
 
         .card {
             position: relative;
@@ -263,6 +267,7 @@
                     <button onclick="window.app.filterCategory('action', this)" class="chip shrink-0">🔥 Action</button>
                     <button onclick="window.app.filterCategory('memory', this)" class="chip shrink-0">🧠 Memory</button>
                     <button onclick="window.app.filterCategory('reflex', this)" class="chip shrink-0">⚡ Reflex</button>
+                    <button onclick="window.app.filterCategory('education', this)" class="chip shrink-0">📚 Education</button>
                 </div>
 
                 <div class="relative w-full md:w-80 shrink-0">
@@ -398,6 +403,136 @@
                     <p class="text-slate-400 text-xs mt-1 line-clamp-2">Slide tiles, merge to reach 2048.</p>
                     <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
                         <span class="text-[10px] text-slate-500 font-medium">Brain Teaser</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+
+                <!-- Game Card: Math Quiz -->
+                <div data-category="education" data-name="math quiz" data-game="mathquiz" onclick="window.app.openGame('mathquiz')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-blue-500/10 text-blue-400 border-blue-500/20 mb-3">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Math Quiz</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Education</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Solve quick math problems against the clock.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">30s Round</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+                <!-- Game Card: Word Scramble -->
+                <div data-category="education" data-name="word scramble" data-game="wordscramble" onclick="window.app.openGame('wordscramble')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-green-500/10 text-green-400 border-green-500/20 mb-3">
+                        <i class="fa-solid fa-spell-check"></i>
+                    </div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Word Scramble</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Education</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Unscramble letters to form the word.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">60s Round</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+                <!-- Game Card: Capital Quiz -->
+                <div data-category="education" data-name="capital quiz" data-game="capitalquiz" onclick="window.app.openGame('capitalquiz')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-purple-500/10 text-purple-400 border-purple-500/20 mb-3">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Capital Quiz</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Education</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Guess the capital city of each country.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">30s Round</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+                <!-- Game Card: Typing Speed -->
+                <div data-category="education" data-name="typing speed" data-game="typingspeed" onclick="window.app.openGame('typingspeed')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-cyan-500/10 text-cyan-400 border-cyan-500/20 mb-3">
+                        <i class="fa-solid fa-keyboard"></i>
+                    </div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Typing Speed</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Education</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Type words as fast and accurately as you can.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">30s Round</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+
+                <!-- Game Card: Hangman -->
+                <div data-category="education" data-name="hangman" data-game="hangman" onclick="window.app.openGame('hangman')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-rose-500/10 text-rose-400 border-rose-500/20 mb-3">
+                        <i class="fa-solid fa-font"></i>
+                    </div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Hangman</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Education</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Guess the hidden word letter by letter.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">Word Game</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+                <!-- Game Card: Simon Says -->
+                <div data-category="memory" data-name="simon says" data-game="simonsays" onclick="window.app.openGame('simonsays')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-amber-500/10 text-amber-400 border-amber-500/20 mb-3">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Simon Says</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Memory</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Repeat the growing color sequence.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">Sequence</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+                <!-- Game Card: Whack-a-Mole -->
+                <div data-category="arcade" data-name="whack a mole" data-game="whackamole" onclick="window.app.openGame('whackamole')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-orange-500/10 text-orange-400 border-orange-500/20 mb-3">
+                        <i class="fa-solid fa-hammer"></i>
+                    </div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Whack-a-Mole</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Arcade</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Whack the moles before they hide. 30s.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">30s Round</span>
+                        <span class="text-xs font-bold text-indigo-400">Play Now</span>
+                    </div>
+                </div>
+
+                <!-- Game Card: Number Guess -->
+                <div data-category="puzzle" data-name="number guess" data-game="numberguess" onclick="window.app.openGame('numberguess')" class="card glass panel p-5 flex flex-col group relative">
+                    <div class="card-icon bg-teal-500/10 text-teal-400 border-teal-500/20 mb-3">
+                        <i class="fa-solid fa-dice"></i>
+                    </div>
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition">Number Guess</h3>
+                        <span class="badge bg-slate-800 text-slate-300 border-slate-700 text-[10px] px-2 py-0.5">Puzzle</span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1 line-clamp-2">Guess the secret number in fewest tries.</p>
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-800/50">
+                        <span class="text-[10px] text-slate-500 font-medium">Logic</span>
                         <span class="text-xs font-bold text-indigo-400">Play Now</span>
                     </div>
                 </div>

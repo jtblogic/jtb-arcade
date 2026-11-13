@@ -13,7 +13,7 @@ export function render(container) {
                 <div id="t48-status" class="text-xs font-bold text-slate-300">Slide to merge</div>
                 <button id="t48-start-btn" class="bg-yellow-600 hover:bg-yellow-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition cursor-pointer">New Game</button>
             </div>
-            <div id="t48-grid" class="grid grid-cols-4 gap-2 bg-slate-950 p-3 rounded-2xl border border-slate-800 mx-auto w-[280px]"></div>
+            <div id="t48-grid" class="grid grid-cols-4 gap-2 bg-slate-950 p-3 rounded-2xl border border-slate-800 mx-auto w-[280px] touch-none"></div>
             <div id="t48-overlay" class="hidden text-center">
                 <p id="t48-msg" class="text-sm font-bold text-slate-200 mb-2"></p>
                 <button id="t48-restart-btn" class="bg-yellow-600 hover:bg-yellow-500 text-white font-bold text-xs px-6 py-2 rounded-xl">Play Again</button>

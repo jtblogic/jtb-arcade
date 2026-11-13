@@ -13,8 +13,8 @@ export function render(container) {
                 <div id="snake-status" class="text-xs font-bold text-slate-300">Press Start</div>
                 <button id="snake-start-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition cursor-pointer">Start</button>
             </div>
-            <div class="relative bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden mx-auto w-[300px] h-[300px]">
-                <canvas id="snake-canvas" width="300" height="300" class="block"></canvas>
+            <div class="relative bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden mx-auto w-[300px] h-[300px] touch-none">
+                <canvas id="snake-canvas" width="300" height="300" class="block touch-none"></canvas>
                 <div id="snake-overlay" class="absolute inset-0 bg-slate-950/90 backdrop-blur-sm flex flex-col items-center justify-center p-4 text-center hidden">
                     <div class="text-4xl mb-2">🐍</div>
                     <h3 id="snake-overlay-title" class="font-bold text-slate-200 text-sm">Game Over</h3>
@@ -194,6 +194,48 @@ export function render(container) {
         initGame();
         if (gameInterval) clearInterval(gameInterval);
         gameInterval = setInterval(move, 120);
+    });
+
+
+    // Mobile D-pad + swipe controls
+    const dpad = document.createElement('div');
+    dpad.className = 'grid grid-cols-3 gap-2 mx-auto w-[180px] mt-2 md:hidden';
+    dpad.innerHTML = `
+        <div></div>
+        <button data-dir="up" class="bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-200 rounded-xl py-3 text-lg font-bold touch-manipulation">?</button>
+        <div></div>
+        <button data-dir="left" class="bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-200 rounded-xl py-3 text-lg font-bold touch-manipulation">?</button>
+        <button data-dir="down" class="bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-200 rounded-xl py-3 text-lg font-bold touch-manipulation">?</button>
+        <button data-dir="right" class="bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-200 rounded-xl py-3 text-lg font-bold touch-manipulation">?</button>
+    `;
+    const wrapper = container.firstElementChild;
+    if (wrapper) wrapper.appendChild(dpad);
+
+    function setDir(d) {
+        if (!running) return;
+        const goingUp = dy === -1, goingDown = dy === 1, goingRight = dx === 1, goingLeft = dx === -1;
+        if (d === 'up' && !goingDown) nextDir = { x: 0, y: -1 };
+        if (d === 'down' && !goingUp) nextDir = { x: 0, y: 1 };
+        if (d === 'left' && !goingRight) nextDir = { x: -1, y: 0 };
+        if (d === 'right' && !goingLeft) nextDir = { x: 1, y: 0 };
+    }
+    dpad.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('touchstart', (e) => { e.preventDefault(); setDir(btn.getAttribute('data-dir')); }, { passive: false });
+        btn.addEventListener('click', () => setDir(btn.getAttribute('data-dir')));
+    });
+
+    let touchStart = null;
+    canvas.addEventListener('touchstart', (e) => { if (e.touches[0]) touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY }; }, { passive: true });
+    canvas.addEventListener('touchend', (e) => {
+        if (!touchStart || !e.changedTouches[0]) return;
+        const dxs = e.changedTouches[0].clientX - touchStart.x;
+        const dys = e.changedTouches[0].clientY - touchStart.y;
+        if (Math.abs(dxs) > Math.abs(dys)) {
+            if (dxs > 20) setDir('right'); else if (dxs < -20) setDir('left');
+        } else {
+            if (dys > 20) setDir('down'); else if (dys < -20) setDir('up');
+        }
+        touchStart = null;
     });
 
     window.addEventListener('keydown', changeDirection);

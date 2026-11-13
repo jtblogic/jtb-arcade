@@ -8,7 +8,15 @@ const DEFAULT_STATS = {
     colorswitch: { plays: 1542, rating: 4.8 },
     memory: { plays: 2730, rating: 4.9 },
     pong: { plays: 1680, rating: 4.6 },
-    twenty48: { plays: 4210, rating: 4.8 }
+    twenty48: { plays: 4210, rating: 4.8 },
+    mathquiz: { plays: 3100, rating: 4.7 },
+    wordscramble: { plays: 2800, rating: 4.6 },
+    capitalquiz: { plays: 2600, rating: 4.8 },
+    typingspeed: { plays: 3500, rating: 4.9 },
+    hangman: { plays: 2900, rating: 4.7 },
+    simonsays: { plays: 2400, rating: 4.8 },
+    whackamole: { plays: 3300, rating: 4.6 },
+    numberguess: { plays: 2100, rating: 4.5 }
 };
 
 const GAME_META = {
@@ -19,7 +27,15 @@ const GAME_META = {
     colorswitch: { name: 'Color Switch', icon: 'fa-palette', color: '#a855f7' },
     memory: { name: 'Memory Match', icon: 'fa-brain', color: '#ec4899' },
     pong: { name: 'Pong Duel', icon: 'fa-table-tennis-paddle-ball', color: '#f43f5e' },
-    twenty48: { name: '2048 Tiles', icon: 'fa-border-all', color: '#eab308' }
+    twenty48: { name: '2048 Tiles', icon: 'fa-border-all', color: '#eab308' },
+    mathquiz: { name: 'Math Quiz', icon: 'fa-calculator', color: '#3b82f6' },
+    wordscramble: { name: 'Word Scramble', icon: 'fa-spell-check', color: '#22c55e' },
+    capitalquiz: { name: 'Capital Quiz', icon: 'fa-globe', color: '#a855f7' },
+    typingspeed: { name: 'Typing Speed', icon: 'fa-keyboard', color: '#06b6d4' },
+    hangman: { name: 'Hangman', icon: 'fa-font', color: '#f43f5e' },
+    simonsays: { name: 'Simon Says', icon: 'fa-lightbulb', color: '#f59e0b' },
+    whackamole: { name: 'Whack-a-Mole', icon: 'fa-hammer', color: '#fb923c' },
+    numberguess: { name: 'Number Guess', icon: 'fa-dice', color: '#14b8a6' }
 };
 
 const HOW_TO_PLAY = {
@@ -30,7 +46,15 @@ const HOW_TO_PLAY = {
     colorswitch: { title: 'Color Switch', steps: ['A color word appears in a random ink color.', 'Press YES if ink color matches the word, NO otherwise.', 'Correct = +1 streak, wrong = -1.', 'You have 15 seconds.'] },
     memory: { title: 'Memory Match', steps: ['Flip two cards at a time.', 'Matching pairs stay open.', 'Remember positions to find all 8 pairs.', 'Fewer moves = better score.'] },
     pong: { title: 'Pong Duel', steps: ['Move your paddle with mouse or up/down keys.', 'Hit the ball past the AI paddle to score.', 'First to 7 points wins.', 'Angle the ball by hitting off-center.'] },
-    twenty48: { title: '2048 Tiles', steps: ['Use arrow keys or swipe to slide tiles.', 'Matching tiles merge into double value.', 'Reach 2048 to win.', 'Game ends when no moves remain.'] }
+    twenty48: { title: '2048 Tiles', steps: ['Use arrow keys or swipe to slide tiles.', 'Matching tiles merge into double value.', 'Reach 2048 to win.', 'Game ends when no moves remain.'] },
+    mathquiz: { title: 'Math Quiz', steps: ['A math problem appears.', 'Pick the correct answer from 4 options.', 'You have 30 seconds.', 'Correct = +1 score.'] },
+    wordscramble: { title: 'Word Scramble', steps: ['Letters of a word are scrambled.', 'Type the correct word and submit.', 'You have 60 seconds.', 'Each correct word = +1 score.'] },
+    capitalquiz: { title: 'Capital Quiz', steps: ['A country name is shown.', 'Pick its capital from 4 options.', 'You have 30 seconds.', 'Correct = +1 score.'] },
+    typingspeed: { title: 'Typing Speed', steps: ['A word appears on screen.', 'Type it exactly and press Enter.', 'You have 30 seconds.', 'Each correct word = +1 score. Aim for high WPM.'] },
+    hangman: { title: 'Hangman', steps: ['A word is hidden.', 'Guess letters by clicking A-Z.', 'Wrong guesses draw the hangman.', 'Guess the word before 6 wrong guesses.'] },
+    simonsays: { title: 'Simon Says', steps: ['Watch the color sequence.', 'Repeat it by clicking colors.', 'Sequence grows each round.', 'One mistake ends the game.'] },
+    whackamole: { title: 'Whack-a-Mole', steps: ['Moles pop up randomly.', 'Click/tap them to score.', 'You have 30 seconds.', 'Missed moles disappear.'] },
+    numberguess: { title: 'Number Guess', steps: ['A secret number 1-100 is chosen.', 'Guess and get higher/lower hints.', 'Try to find it in fewest guesses.', 'Score = 100 - guesses used.'] },
 };
 const ACHIEVEMENTS = [
     { id: 'first_play', name: 'First Steps', desc: 'Play your first game', icon: 'fa-shoe-prints', reward: 25 },

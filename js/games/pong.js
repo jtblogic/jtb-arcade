@@ -18,7 +18,7 @@ export function render(container) {
                 <button id="pong-start-btn" class="bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition cursor-pointer">Start</button>
             </div>
             <div class="relative bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden mx-auto w-[300px] h-[300px]">
-                <canvas id="pong-canvas" width="300" height="300" class="block"></canvas>
+                <canvas id="pong-canvas" width="300" height="300" class="block touch-none"></canvas>
                 <div id="pong-overlay" class="absolute inset-0 bg-slate-950/90 backdrop-blur-sm flex flex-col items-center justify-center p-4 text-center hidden">
                     <div class="text-4xl mb-2">🏓</div>
                     <h3 id="pong-overlay-title" class="font-bold text-slate-200 text-sm">Game Over</h3>
@@ -168,11 +168,46 @@ export function render(container) {
     window.addEventListener('keydown', onKey);
     window.addEventListener('keyup', onKey);
 
+
+    // Mobile up/down controls
+    const pControls = document.createElement('div');
+    pControls.className = 'flex gap-3 justify-center mt-2 md:hidden';
+    pControls.innerHTML = '<button id="pong-up" class="bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl px-6 py-3 text-lg font-bold touch-manipulation">? Up</button><button id="pong-down" class="bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl px-6 py-3 text-lg font-bold touch-manipulation">? Down</button>';
+    const pWrapper = container.firstElementChild;
+    if (pWrapper) pWrapper.appendChild(pControls);
+    const pUp = document.getElementById('pong-up');
+    const pDown = document.getElementById('pong-down');
+    let pHeld = null;
+    function pHold(dir, on) { if (on) pHeld = dir; else if (pHeld === dir) pHeld = null; }
+    if (pUp) {
+        pUp.addEventListener('touchstart', (e) => { e.preventDefault(); pHold('up', true); }, { passive: false });
+        pUp.addEventListener('touchend', () => pHold('up', false));
+        pUp.addEventListener('mousedown', () => pHold('up', true));
+        pUp.addEventListener('mouseup', () => pHold('up', false));
+        pUp.addEventListener('mouseleave', () => pHold('up', false));
+    }
+    if (pDown) {
+        pDown.addEventListener('touchstart', (e) => { e.preventDefault(); pHold('down', true); }, { passive: false });
+        pDown.addEventListener('touchend', () => pHold('down', false));
+        pDown.addEventListener('mousedown', () => pHold('down', true));
+        pDown.addEventListener('mouseup', () => pHold('down', false));
+        pDown.addEventListener('mouseleave', () => pHold('down', false));
+    }
+    // integrate held direction into update: override player movement when held
+    const origUpdate = update;
+    // We'll patch by adding held movement inside the existing loop via monkey: instead, add interval
+    const pHoldInterval = setInterval(() => {
+        if (!running) return;
+        if (pHeld === 'up') playerY = Math.max(0, playerY - 8);
+        if (pHeld === 'down') playerY = Math.min(H - PADDLE_H, playerY + 8);
+    }, 30);
+
     draw();
 
     return () => {
         running = false;
         if (raf) cancelAnimationFrame(raf);
+        clearInterval(pHoldInterval);
         canvas.removeEventListener('mousemove', onMove);
         canvas.removeEventListener('touchmove', onTouch);
         window.removeEventListener('keydown', onKey);

@@ -12,7 +12,15 @@ const ASSETS = [
   './js/games/colorswitch.js',
   './js/games/memory.js',
   './js/games/pong.js',
-  './js/games/twenty48.js'
+  './js/games/twenty48.js',
+  './js/games/mathquiz.js',
+  './js/games/wordscramble.js',
+  './js/games/capitalquiz.js',
+  './js/games/typingspeed.js',
+  './js/games/hangman.js',
+  './js/games/simonsays.js',
+  './js/games/whackamole.js',
+  './js/games/numberguess.js'
 ];
 
 self.addEventListener('install', (e) => {
