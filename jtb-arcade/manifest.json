@@ -1,0 +1,15 @@
+{
+  "name": "JTB Arcade",
+  "short_name": "JTB Arcade",
+  "description": "Play instant browser games. No download needed.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#020617",
+  "theme_color": "#6366f1",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
